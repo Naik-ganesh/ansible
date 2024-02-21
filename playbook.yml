@@ -1,0 +1,59 @@
+---
+- name: playbook1
+  hosts: all
+  become: true
+  tasks:
+      - name: update_httpd
+        apt:
+           update_cache: true
+
+      - name: install_apache2
+        apt:
+           name: apache2
+           state: present
+
+      - name: start_apache2
+        service:
+           name: apache2
+           state: started
+
+
+      - name: install_docker
+        apt:
+           name: docker
+           state: latest
+
+  
+      - name: install_git
+        apt:
+           name: git
+           state: present
+
+
+      - name: create  directory
+        file:
+          name: ganesh3
+          path: /root/
+          state: directory
+          mode: '0777'
+
+      - name: create  file
+        file:
+          path: /root/ganesh2/file1
+          state: touch
+          mode: '0777'
+
+      - name: copy file1 to ganesh2 directory ganesh3
+        copy:
+          remote_src: yes
+          src: /root/ganesh2/file1
+          dest: /root/ganesh3
+          owner: root 
+          mode: '0777'
+
+      - name: add content to file1 
+        copy:
+          dest: /root/ganesh3/file1
+          content: !
+                   this is my ansible playbook
+
